@@ -1,0 +1,314 @@
+==== Thinking in React:  Steps
+
+* Before Starting: Sketch up a user interface mockup, then build the mock minimally in React
+* Step 1: Break the UI into a component hierarchy
+* Step 2: Build a static version in React
+* Step 3: Identify the minimal (but complete) representation of UI state
+* Step 4: Identify where your state should live
+* Step 5: Add inverse data flow
+
+We'll use this process to build a small application
+
+=== Step 1: Sketch then build a mock interface
+
+_Build an application with a very limited subset of blog functionality_
+
+* You should be able to use it to view a blog post and customize the
+page
+** The body text color and size, the title color, and background color
+are configurable
+*** You select a palette by pressing one of the theme buttons
+** An enlarge button and a reduce button should enable the user to
+adjust the text size in 10 pixel increments
+
+=== Step 1: Build a Mock
+
+image:images/04-components-and-views/paper-prototype.png[A Blog Editor Markup]
+
+=== Step 2: Create a Component Hierarchy
+
+* "Thinking in React" suggests building the hierarchy based on the boxes
+drawn on the mock
+* Any component with a box inside of it should be the direct parent of
+the component inside the box
+
+=== Step 2: A Component Hierarchy Illustrated
+
+image:./images/04-components-and-views/blog_hierarchy.png[The Blog Hierarchy]
+
+=== Step 2: Create a Component Hierarchy
+
+The application breaks down into the following components:
+
+* _Blog_: serves as the top-level application container
+* _Theme Bar_: generates and serves as a container for the theme buttons
+* _Theme Button_: used to customize the blog palette
+* _Resizing Button Bar_: contains buttons used for adjusting the text
+size
+* _Blog Post_: displays the blog post and its title
+
+=== Step 2: Create a Component Hierarchy
+
+* "Thinking in React" suggests building the hierarchy based on the boxes
+drawn on the mock.
+* Any component with a box inside of it should be the direct parent of
+the component inside the box.
+* Based on the criteria, the application breaks down as follows:
+
+[source,text]
+----
+Blog
+  ThemeBar
+    ThemeButtons
+  ResizingButtons
+  BlogPost
+----
+
+=== Step 3: Build a Static Version in React
+
+_Before we can build a static version in React, we need to cover
+building React components_
+
+
+// TODO: BONEYARD
+
+
+.valid HTML (no assignment):
+----
+<div disabled>+</div>`
+----
+
+.valid HTML (assignment):
+----
+<div disabled={isDisabled}>+</div>
+----
+
+=== Step 3: Build a Static Version in React
+
+Reasons for building a static version
+
+* Enforces separation between display logic from user interaction logic.
+* It structures your application in such a way that its very easy to
+reason about. Each component is comparable to a pure function in that it
+always displays the same way when it is passed the same `props` values.
+* It drives home the idea that any changes are driven from further up in
+the hierarchy.
+* The biggest difference between `props` and state is that `props` do
+not change through out the life of the running application and state
+does. Building a static version in React without state as a separate
+step underscores this difference.
+* It makes it easy to determine the props are being consumed properly in
+the child components.
+
+[[step-4-identify-representation-of-state]]
+=== Step 4: Identify Representation of State
+
+_"Thinking in React" provides the following list of questions to ask
+about each data point to help determine which ones represent state:_
+
+* Is it passed in from a parent via props?
+* Does it remain unchanged over time?
+* Can you compute it based on any other state or props in your
+component?
+
+[[step-4-identify-representation-of-state-1]]
+=== Step 4: Identify Representation of State
+
+_Answers:_
+
+* Border color, text Color and label color are not part of `state`
+because they can be computed (using the themes utility) based on the
+selected `hue`.
+* Text size IS part of `state` because it can change during runtime and
+it cannot be computer based on any other `state` or `props`.
+* Selected hue IS part of `state` because it can change during runtime
+and it cannot be computer based on any other `state` or `props`.
+* Headline size is not part of `state` because it is calculated by added
+30 to the blog post text size.
+* The HUES array is not part of `state` because there is no way to
+change it via the application.
+
+[[step-5-where-should-state-be-managed]]
+=== Step 5: Where should `state` be managed?
+
+* In keeping with React's "top-down/one way", "Thinking in React"
+suggests trying to determine if the downstream components that use
+`state` have a common parent at the next level up the hierarchy.
+** If not, move further up the hierarchy.
+* In the Blog Application
+** The `BlogPost` gets configured based on `state`
+** `ThemeBar` and `ResizingButtons` at that same level are also look to
+state to determine their appearance
+** The `Blog` component is their common ancestor
+** So `state` will be managed by the `Blog` component.
+
+[[step-5-where-should-state-be-managed-1]]
+=== Step 5: Where should `state` be managed?
+
+The `state` object should be initialized in the constructor of the
+component that will manage `state`
+
+[source,jsx]
+----
+class Blog extends Component {
+
+  constructor(props) {
+   this.state = {
+     hue: 3,
+     size: 20
+   };
+  }
+  render() {
+     ...
+  }
+}
+----
+
+[[step-5-where-should-state-be-managed-2]]
+=== Step #5: Where should `state` be managed?
+
+State should be used to set `props` values for child components
+
+[source,jsx]
+----
+class Blog extends Component {
+  ...
+  render() {
+    return (
+      <div>
+       <span>
+        <ThemeBar chosenHue={this.state.hue} hues={HUES}/>
+        <ResizingButtons size={this.state.size}/>
+        <BlogPost theme={themeColors(this.state.hue)}
+                  size={this.state.size} />
+      </span>
+    </div>
+    )
+  }
+}
+----
+
+=== Step #6: Inverse Data Flow
+
+* In keeping with top-down logic flow design principle, `state` should
+only be modified in the top-level component where it lives.
+* The canonical way to handle this in React is to implement change
+handlers that modify state in the top-level component and pass them to
+the downstream components where the UI widgets (such as buttons) live,
+as `props`.
+* In the downstream components, such as the theme buttons, bind events
+to handlers that do nothing more than wrap the change handlers passed
+down from the top-level component that manages state.
+
+=== Setting Custom Properties (JavaScript)
+
+* Custom properties are specified the same way standard HTML properties
+are set (key/value pairs), but...
+* ... custom properties are set by a parent component and passed to a
+downstream child component for consumption
+
+[source,jsx]
+----
+// parent Blog setting custom props on child BlogPost
+class Blog extends Component {
+  render() {
+    return React.createElement('div', {},
+      React.createElement(BlogPost, {
+        pageColor: 'lightGreen',
+        headlineColor: 'orange'
+      })
+    );
+  }
+}
+----
+
+=== Consuming Custom Properties (JavaScript)
+
+* The child component uses `this.props` to access `props` values
+* Dot notation to access individual properties:
+** `this.props.pageColor` yields `"lightGreen"`
+
+[source,jsx]
+----
+class BlogPost extends Component {
+  render() {
+    return React.createElement('div', {
+      style: {
+        backgroundColor: this.props.pageColor
+      }
+    }, React.createElement('div', {},
+        "Blog Title Placeholder"),
+       React.createElement('div', {},
+          "Blog Post Placeholder"));
+  }
+}
+----
+
+=== JSX Generates JavaScript
+
+* Because JSX generates JavaScript, you can embed JSX into JavaScript
+code, and you can embed JavaScript expressions into JSX as property or
+`prop` values
+* JavaScript expressions embedded in JSX must be enclosed in curly
+braces
+
+=== Embedding JS in JSX; Embedding JSX in JS
+
+[source,jsx]
+----
+// JSX embedded in createElement's argument list
+// JSX using a JS expression (variable value)
+
+render () {
+
+  const underDevelopment = true;
+
+  return React.createElement(
+    'div', {},
+    React.createElement('button', null, "Theme 1"),
+    <button hidden={underDevelopment}>
+      Theme 2
+    </button>,
+    React.createElement(BlogPost)
+  );
+}
+----
+
+=== Look Ma, No Backticks, Quotes or Escaping
+
+[source,jsx]
+----
+// Renamed this slide to underscore that JSX does not
+// requires backticks or quotes
+
+render () {
+
+  const underDevelopment = true;
+
+  return React.createElement(
+    'div', {},
+    React.createElement('button', null, "Theme 1"),
+    <button hidden={underDevelopment}>
+      Theme 2
+    </button>,
+    React.createElement(BlogPost)
+  );
+}
+----
+
+=== Remember that JSX is not HTML
+
+* HTML comments will not work in JS
+* JavaScript comments are JavaScript expressions and need to be enclosed
+in curly braces
+
+[source,javascript]
+----
+{/* This will not show up in the browser */}
+
+<!-- This will show up -->{// but not this }
+
+{/* or
+     this
+/*}
+----

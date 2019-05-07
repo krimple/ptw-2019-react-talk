@@ -1,0 +1,11 @@
+node_modules
+.bak
+.bck
+.tmp
+tmp
+.project
+.classpath
+.idea
+*.iml
+*.ipr
+

@@ -1,0 +1,53 @@
+// Default mixins and settings -----------------
+@import "../template/mixins";
+@import "../template/settings";
+// ---------------------------------------------
+
+
+@import url(https://fonts.googleapis.com/css?family=Lato:300,700,400italic,700italic);
+@import url(http://fonts.googleapis.com/css?family=Source+Code+Pro:500);
+@import url(https://fonts.googleapis.com/css?family=Oxygen+Mono:400);
+
+// Include theme-specific fonts
+
+// Override theme settings (see ../template/settings.scss)
+$mainFont: Lato, serif;
+$mainColor: #fff;
+$headingFont: Tahoma, Geneva, sans-serif;
+$headingColor: #fff;
+$headingMargin: 0 0 20pt 0;
+$headingTextShadow: none;
+$headingLineHeight: auto;
+$headingTextTransform: none;
+$backgroundColor: #296997;
+$linkColor: #ffaaaa;
+$linkColorHover: lighten( $linkColor, 20% );
+$selectionBackgroundColor: rgba(0, 0, 0, 0.99);
+
+$heading1Size: 2.5em;
+$heading2Size: 1.2em;
+$heading3Size: 1.1em;
+$heading4Size: 1.0em;
+
+// Theme template ------------------------------
+@import "../template/theme" ;
+// ---------------------------------------------
+
+// overrides
+
+.reveal pre code {
+    font-size: 1.6em;
+    line-height: 1.0em;
+    font-family: Oxygen+Mono;
+    letter-spacing: 0.05em;
+    margin: 1em;
+}
+
+.reveal section[data-markdown] h1 {
+    text-align: center !important;
+}
+
+.reveal pre {
+    border: 1px solid white;
+    padding: 0px;
+}

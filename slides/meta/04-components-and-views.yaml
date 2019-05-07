@@ -1,0 +1,14 @@
+---
+title: 'React Components'
+subtitle: 'React and Friends'
+header-includes:
+    - \usepackage{fancyhdr}
+    - \pagestyle{fancy}
+    - \fancyhead[R]{\thepage}
+    - \fancyhead[L]{React and Friends 2.0 - Components 1 - Chariot Solutions}
+name: Components and Views
+maxwidth: 1280
+maxheight: 720
+caption: numbered,
+footline: ''
+...

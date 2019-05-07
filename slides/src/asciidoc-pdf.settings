@@ -1,0 +1,23 @@
+// BUG IN formatting in PDF engine
+// does NOT allow syntax highlighting to
+// co-exist with quoting features (bolding)
+// we will disable the highlighter
+// since we print in Black and White anyway
+// and coloration is NOT important except in
+// slide renderings on screen
+:source-highlighter: none
+:icons: font
+:imagesdir: ../pdf
+
+:htmllisting: source,html,listing,linenums,subs="+quotes,+macros"
+:javascriptlisting: source,javascript,listing,linenums,subs="+quotes,+macros"
+:javascriptlistingnomacros: source,javascript,listing,linenums,subs="+quotes,+macros"
+:typescriptlisting: source,javascript,listing,linenums,subs="+quotes,+macros"
+:graphqllisting: source,javascript,listing,linenums,subs="+quotes,+macros"
+:jsxlisting: source,html,listing,linenums,subs="+quotes,+macros"
+:bashlisting: source,javascript,listing,linenums,subs="+quotes,+macros"
+:csslisting: source,css,listing,linenums,subs="+quotes,+macros"
+:unstyledlisting: source,listing,linenums
+:graphviz: svg,width=800
+:svg: svg,width=800
+:png: png,width=800

@@ -1,0 +1,15 @@
+---
+title: 'Asynchronous Redux'
+subtitle: 'React and Friends'
+header-includes:
+    - \usepackage{fancyhdr}
+    - \setlength{\headheight}{13.6pt}
+    - \setlength{\footheight}{13.6pt}
+    - \pagestyle{fancy}
+    - \fancyhead[L]{React and Friends 2.0 - Async Redux - Chariot Solutions}
+name: Async Redux
+maxwidth: 1280
+maxheight: 720
+caption: numbered,
+footline: ''
+---

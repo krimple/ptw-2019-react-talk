@@ -1,0 +1,15 @@
+---
+title: 'Javascript ES2015 and ES2016'
+subtitle: 'React and Friends'
+header-includes:
+    - \usepackage{fancyhdr}
+    - \pagestyle{fancy}
+    - \fancyhead[R]{\thepage}
+    - \fancyhead[L]{React and Friends 2.0 - ES2015/16 - Chariot Solutions}
+name: ES2015/2016
+maxwidth: 1280
+maxheight: 720
+caption: numbered,
+footline: ''
+...
+

@@ -1,0 +1,8 @@
+:source-highlighter: coderay
+:coderay-linenums-mode: inline
+:icons: font
+
+= PWT React labs
+
+== Exercises
+include::exercises.adoc[]

@@ -1,0 +1,19 @@
+---
+title: 'Ajax With React'
+subtitle: 'React and Friends'
+header-includes:
+    - \usepackage{fancyhdr}
+    - \pagestyle{fancy}
+    - \fancyhead[R]{\thepage}
+    - \fancyhead[LO]{Chariot Solutions}
+    - \fancyhead[L]{React and Friends 2.0 - Ajax - Chariot Solutions}
+
+    - \fancyhead[LE]{Ajax}
+    - \fancyhead[C]{React and Friends 2.0}
+name: Ajax
+maxwidth: 1280
+maxheight: 720
+caption: numbered,
+footline: ''
+...
+

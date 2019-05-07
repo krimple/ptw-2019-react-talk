@@ -1,0 +1,14 @@
+---
+title: 'The React Router'
+subtitle: 'React and Friends'
+header-includes:
+    - \usepackage{fancyhdr}
+    - \pagestyle{fancy}
+    - \fancyhead[R]{\thepage}
+    - \fancyhead[L]{React and Friends 2.0 - Routing - Chariot Solutions}
+name: Router
+maxwidth: 1280
+maxheight: 720
+caption: numbered,
+footline: ''
+...

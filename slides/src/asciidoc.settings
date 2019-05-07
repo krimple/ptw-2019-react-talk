@@ -1,0 +1,9 @@
+:revealjs_history: true
+:revealjs_slideNumber: "h.v"
+:revealjs_theme: chariot
+:source-highlighter: coderay
+:coderay-css: class
+:linkcss: true
+:stylesdir: .
+:coderay-css-file: src/coderay.css
+:coderay-linenums-mode: inline

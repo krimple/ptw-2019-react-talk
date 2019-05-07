@@ -1,0 +1,2 @@
+pandoc -f markdown --no-highlight -V geometry:margin=1in -V theme=%2 -V hooks=false --smart --template ./pandoc-templates/default.beamer -V fontsize=11pt -t beamer --no-tex-ligatures --normalize -o pdf\%1.pdf meta\%1.yaml slides\%1.md
+explorer pdf\%1.pdf

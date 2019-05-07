@@ -1,0 +1,181 @@
+ifdef::slides[]
+include::asciidoc-slides.settings[]
+endif::slides[]
+
+ifndef::slides[]
+include::asciidoc-pdf.settings[]
+endif::slides[]
+
+ifndef::slides[== React and Friends: Introduction]
+
+=== What is React?
+
+* A component library written by developers from Facebook
+* Includes JSX, a domain-specific component rendering language
+* React is the 'view' in client-side 'MVC'
+
+=== The React "Component"
+
+* A React `Component`:
+** a single logical entity rendered by React
+** mounted as a custom HTML tag
+** receives custom attributes as data
+** renders HTML as output
+
+=== React Components are HTML Tags
+
+.Mounting a ficticious React component
+[{jsxlisting}]
+----
+  <body>
+     <Game                                      <1>
+           theme={'colorful'}                   <2>
+           highScores={[                        <3>
+               { name: 'AAA', score: 999 },
+               { name: 'BBB', score: 888 }
+           ]}
+     />                                         <4>
+  </body>
+----
+<1> React components are mounted as custom HTML Elements
+<2> Custom attributes, known as `props`, feed data to the component
+<3> Data passed as props can be complex Javascript structures
+<4> Components can be bodyless when they don't have children
+
+=== Why Components?
+
+* They are extremely re-usable
+* They can be defined with ECMAScript class definitions or even functions
+* They can be composed into a tree
+
+=== Components are Composed into Trees
+
+.A tree of components
+[{jsxlisting}]
+----
+<body>
+   <Game ...>                                    <1>
+     <ScorePanel ... />                          <2>
+     <GamePlayArea ...>                          <3>
+        <Controls .... />
+     </GamePlayArea>
+   </Game>
+</body>
+
+----
+<1> Components can contain an element body
+<2> Inner components can be bodyless if they contain their own view area
+<3> Components can nest other components to any _reasonable_ level of depth
+
+=== React Component Lifecycle
+
+* Components live within React's lifecycle and can respond to events such as
+** Mounting
+** Receiving data
+** Unmounting
+** Deciding whether to update
+
+=== Rendering and Receiving Data
+
+* React Components are driven by a `render` method
+* Components can be fed read-only properties from parent components (`props`)
+* Components re-render when their fed props change
++
+NOTE: Components can also be stateful... We'll discuss later
+
+=== React Component Data Flow
+
+.Data flows downward, events flow upward
+[ditaa,'./images/01-introduction/react-parent-child-communication',{png}]
+....
++--------------------------------------------------------------------+
+|                                                                    |
+|                             Parent Component                       |
+|                                                                    |
++--------------------------------------------------------------------+
+           | data       ^
+           | (props)    | events
+           |            | (funcs)
+           v            |
+        +---------------------+
+        |   Child Component   |<--------------------+
+        +---------------------+                     |
+                       |       data                 |
+                       +---------------+            | events
+                                       |            |
+                                       v            |
+                                    +-----------------------+
+                                    |   Child Component     |
+                                    +-----------------------+
+....
+
+=== React's ecosystem
+* Developers commonly use a collection of other APIs, some by Facebook,
+some by others, that circle around the core API
+[.step]
+** State management (redux)
+** Forms processing (formsy, react-forms, redux-forms, plain forms)
+** View routing (react-router)
+** Data APIs (Relay/GraphQL Servers)
+** Ajax APIs (axios, fetch, superagent, etc.)
+
+=== Key React Concepts
+
+[.step]
+* Components maintain a "Virtual DOM"
+[.step]
+** a memory-based model of the contents of the DOM
+** changes to the component are compared to the original virtual DOM content
+** differences are applied in efficient ways via batching
+
+* Components have a lifecycle
+** Respond to initialization, data changes, unmounting, and other events
+
+* React makes view development simpler with JSX
++
+TIP: Learning how to work within JSX makes you a productive React developer
+
+=== Learn by Doing
+
+[.step]
+* Create a react app
+* Create a simple functional component
+* Experiment with JSX
+* Pass in props, handle props in inner component
+* Wrap content with outer components
+* Light CSS Styling with wrapper components, StyledComponents
+* BREAK!!
+
+=== Learn by Doing, Part 2
+
+[.step]
+* Create a class-based component
+* Define a stateful component
+* Handle events
+* Basic managed forms
+* BREAK!!!
+
+=== Learn by Doing, Part 3
+
+[.step]
+* Send state changes back to parent component
+* React hooks (if time permits) for functional state management
+* Using an AJAX API
+* Using a GraphQL API
+* END
+
+=== Final thoughts, what we left out
+
+[.step]
+* Redux / state engines - why you need them?
+* Routing
+* Testing (check out JEST and Enzyme for useful testing APIs)
+* TypeScript for managing datatypes
+* RxJS or other reactive library for managing data flow
+
+=== Wrapup
+
+[.step]
+* React is a component-driven system
+* Break your apps down into trees of components
+* Atomic design matches nicely

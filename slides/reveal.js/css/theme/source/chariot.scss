@@ -1,0 +1,221 @@
+/**
+ * A simple theme for reveal.js presentations, similar
+ * to the default theme. The accent color is darkblue.
+ *
+ * This theme is Copyright (C) 2012 Owen Versteeg, https://github.com/StereotypicalApps. It is MIT licensed.
+ * reveal.js is Copyright (C) 2011-2012 Hakim El Hattab, http://hakim.se
+*/
+
+// Default mixins and settings -----------------
+@import '../template/mixins';
+@import '../template/settings';
+// ---------------------------------------------
+@import url('https://fonts.googleapis.com/css?family=Fira+Mono:400,500,700');
+@import url('https://fonts.googleapis.com/css?family=Fira+Mono:400,500,700|Work+Sans:400,600,700,900');
+@import url('https://fonts.googleapis.com/css?family=Heebo|Roboto|Vollkorn:400,500,700');
+@import './font-awesome/scss/font-awesome';
+// Include theme-specific fonts
+// Override theme settings (see ../template/settings.scss)
+$backgroundColor: #296997;
+$codeFont: 'Fira Mono';
+$codeFontSize: 24pt;
+$codeFontWeight: 400;
+$headingColor: #fff;
+$headingFont: 'Heebo';
+// $headingFontWeight: 'regular';
+// $headingLineHeight: auto;
+// $headingMargin: 0 0 1em 0;
+// $headingTextShadow: none;
+// $headingTextTransform: none;
+$linkColor: #ffaaaa;
+$linkColorHover: lighten($linkColor, 20%);
+$mainColor: #fff;
+$mainFont: 'Vollkorn';
+$mainFontSize: 24pt;
+$mainFontWeight: 400;
+$selectionBackgroundColor: rgba(0, 0, 0, 0.99);
+
+// Theme template ------------------------------
+@import '../template/theme';
+// ---------------------------------------------
+// logo
+body {
+  background-image: url('/images/HorseHead.png');
+  background-position-x: 2%;
+  background-position-y: 98%;
+  background-repeat: no-repeat;
+  background-size: 5%;
+  border: 1px solid black;
+}
+
+.reveal {
+  h1,
+  h2,
+    h3 {
+    code {
+      color: white;
+      font-family: $codeFont;
+    }
+  }
+  h1, h2 {
+    text-align: center;
+  }
+  h3 {
+    text-align: left;
+  }
+  h1 {
+    font-size: 2em;
+  }
+  h2 {
+    font-size: 1.6em;
+    line-height: 1.2em;
+    border-bottom: 1px solid white;
+  }
+  h3 {
+    font-size: 1.2em;
+    line-height: 1.4em;
+    margin-top: 0.4em;
+    margin-bottom: 0;
+  }
+  p {
+    margin: 1px;
+    font-size: 1.0em;
+    font-family: $mainFont;
+    font-weight: $mainFontWeight;
+    line-height: 1.1em;
+  }
+  pre {
+    font-family: $codeFont;
+    color: black;
+    background: white;
+    font-size: $codeFontSize !important;
+    font-weight: $codeFontWeight !important;
+    margin-left: 5px;
+    margin-top: 2px;
+    margin-bottom: 5px;
+    margin-right: 10px;
+  }
+  .ulist {
+    font-weight: $mainFontWeight !important;
+  }
+  ul {
+    padding-left: 0.3em !important;
+    li {
+      padding-top: 0.2em !important;
+      padding-bottom: 0.2em !important;
+    }
+    ul {
+      padding-top: .2em !important;
+    }
+  }
+  p pre code,
+  li pre {
+    font-weight: normal;
+    color: black;
+  }
+  p em,
+  li em {
+    font-weight: normal;
+    color: aqua;
+  }
+  .slides {
+    section img {
+      background-color: #296997 !important;
+      border: none !important;
+      box-shadow: none !important;
+      height: auto;
+    }
+    section.present {
+      text-align: left;
+      vertical-align: top;
+    } // let's hope there are no bold lines in the text!
+    div.listingblock>div>pre>code>b {
+      float: right;
+      padding-right: 1em;
+      color: #aa0000;
+    }
+    .listingblock {
+      width: 100% !important;
+      font-family: $codeFont;
+      .title {
+        font-weight: 600;
+        padding-top: 1em;
+        color: white;
+      }
+    }
+    .colist,
+    .arabic {
+      font-family: $codeFont;
+      margin-left: 0px;
+      margin-top: 12px;
+      margin-bottom: 5px;
+      margin-right: 75px;
+      padding-right: 1em;
+      td {
+        font-size: 0.8em;
+        line-height: 1.0em !important;
+        border: none;
+      }
+    }
+  }
+  .slides .admonitionblock table {
+    tbody {
+      tr {
+        text-align: left;
+      }
+    }
+    margin-top: 2em;
+    border: 2px solid white;
+    background-color: #970029;
+    width: 100%;
+  }
+
+  .fourth {
+    display: inline-block;
+    width: 24%;
+    text-align: center;
+  }
+
+  .third {
+      display: inline-block;
+      width: 33%;
+      text-align: center;
+  }
+
+  .half {
+      display: inline-block;
+      width: 49%;
+      text-align: center;
+  }
+
+  .text-center {
+      text-align: center;
+  }
+
+  #marble-diagram {
+      text-align: center;
+      background-color: whitesmoke;
+      img {
+          background-color: whitesmoke !important;
+      }
+  }
+
+  .space-50 {
+    margin-top: 50px;
+  }
+
+  .space-100 {
+    margin-top: 100px;
+  }
+
+  .code-center {
+      .CodeRay {
+        margin: auto
+      }
+  }
+  .CodeRay span.line-numbers {
+   margin-right: 20px;
+  }
+}
+
+

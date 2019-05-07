@@ -1,0 +1,16 @@
+---
+title: 'Introduction'
+subtitle: 'React and Friends'
+header-includes:
+    - \usepackage{fancyhdr}
+    - \pagestyle{fancy}
+    - \fancyhf{}
+    - \fancyhead[R]{\thepage}
+    - \fancyhead[L]{React and Friends 2.0 - Introduction - Chariot Solutions}
+name: Introduction
+maxwidth: 1280
+maxheight: 720
+caption: numbered,
+footline: ''
+...
+

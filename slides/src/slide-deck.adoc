@@ -1,0 +1,14 @@
+ifdef::slides[]
+include::asciidoc-slides.settings[]
+endif::slides[]
+
+ifndef::slides[]
+include::asciidoc-pdf.settings[]
+endif::slides[]
+
+= React Workshop, PTW 2019 DevDays
+:idprefix: slide_
+
+== Introduction
+
+include::ptw-2019-slides.adoc[]
