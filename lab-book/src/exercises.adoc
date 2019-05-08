@@ -154,19 +154,19 @@ Add a style to the application-level stylesheet
 ----
 
 .Now, update DisplayRandomNumber to use the `className` prop to attach the class
-----
 [{jsxlisting}]
+----
 const DisplayRandomNumber = (props) =>
   <span *className="bigNumber"*>                <1>
     {props.number.toLocaleString()}
   </span>;
-
 ----
 <1> React uses `className` rather than `class` because `class` is a reserved JavaScript word.
 
 WARNING: This is a _global style_ as anything added to a normal CSS stylesheet has no concept of locality. It's just added to the styles in the page. There is a way around this, actually several, and we'll look at two of them.
 
 .Prove it by adding the same style to App.js
+[{jsxlisting}]
 ----
     <div>
       *<p>This is a <span className="bigNumber">BIG number</span></p>*   <1>
@@ -260,7 +260,7 @@ In this sample, we'll add a special member variable that only stateful component
 [{jsxlisting}]
 ----
 import React, { Component } from 'react';
-*import * as styles from './TaskList.module.css';
+**import * as styles from './TaskList.module.css';**
 
 export default class TaskList extends Component {
 
@@ -402,10 +402,18 @@ const TaskItem = ({task, index, onCompleteTask}) => {.        <1>
 
 export default TaskItem;
 ----
-<1> Destructuring is a way of automatically creating local reference variables from properties of the passed argument to a function. The render method in a functional component is passed the `props` as the only argument. We destructure that into the three props we are going to pass from the parent:  `task` (the current task), `index` (the index / key of the current task to report back when we complete it), and `onCompleteTask`, a prop passed that represents the event we call when we complete a task. See the next snippet for how these are passed.
+<1> Destructure `props` into the fields we're interested in.
++
+.What is destructuring, anyway?
+[TIP]
+====
+Destructuring is a way of automatically creating local reference variables from properties of the passed argument to a function. The render method in a functional component is passed the `props` as the only argument. We destructure that into the three props we are going to pass from the parent:  `task` (the current task), `index` (the index / key of the current task to report back when we complete it), and `onCompleteTask`, a prop passed that represents the event we call when we complete a task. See the next snippet for how these are passed.
+====
 
 2. Finally, edit TaskList to remove inner list and replace with references to TaskItem
 
+.Replace in-line task item code with new component
+[{jsxlisting}]
 ----
 import React, { Component } from 'react';
 *import TaskItem from './TaskItem';*
@@ -458,6 +466,132 @@ export default class TaskList extends Component {
 
 NOTE:  You can't access the `key` prop of any component within it. Hence we pass the index from our mapping operation to another prop, `index`, so we can access it in `TaskItem`.
 
+=== Exercise 13: Getting data in and out with Ajax
+
+Now we'll install a "database" server (actually the awesome and extremely useful `json-server`) and load and save our tasks to it.
+
+1. First, install some dependencies:
++
+----
+npm install --save-dev json-server concurrently
+----
++
+TIP: `concurrently` runs two or more processes together from a single NPM script, and `json-server` runs a web server that exposes a JSON document as if it was an actual database.
+
+2. Create a file at the root of the project. Name it `db.json` and copy the `tasks` collection into it. Quote all property names with double-quotes, and replace the single quotes with double quotes. Finally, wrap the entire thing as an object. This is a JSON-formatted file:
++
+.The new `db.json` database file for `json-server`. You _must_ add an `id` field and double-quote all strings and non-numeric properties:
+[{jsxlisting}]
+----
+{
+  "tasks": [
+    { "id": 1, "description": "Wash the floors", "complete": false },
+    { "id": 2, "description": "Do the dishes", "complete": false },
+    { "id": 3, "description": "Clean your clothes", "complete": false },
+    { "id": 4, "description": "Hang out at the mall", "complete": true }
+  ]
+}
+----
+
+2. Edit `package.json` and add a script to start up the `json-server` engine, rename the current `start` method as 'start-app', and weld both processes together with a new `start` script:
++
+.Update the scripts entry to this:
+[{jsxlisting}]
+----
+  "scripts": {
+    **"start": "concurrently \"npm run start-json\" \"npm run start-app\"",**
+    **"start-json": "json-server --port=3001 db.json",**
+    **"start-app": "react-scripts start",**
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+----
++
+Now when you issue a `npm start` command, the app server runs on port 3000, and the database REST web server runs on port 3001.
+
+2. Next, add the proxy entry. This establishes a tunnel to the `json-server` when an ajax call is made:
++
+.Add the following entry to the `package.json` file to define a proxy host
+[{textlisting}]
+----
+{
+  "private": true,
+  "proxy": "http://localhost:3001",       <-- add this entry
+  "dependencies": {
+    ...
+  }
+  ...
+}
+----
+
+2. Add an AJAX library. We recommend `axios` if no better choice exists:
++
+.Install the `axios` library from the command line with:
+[{jsxlisting}]
+----
+npm install axios
+----
+
+2. Wire up the GET call in the `componentDidMount` lifecycle method of the `TaskList` like so:
++
+.Add the `axios` import and the `componentDidMount` method to `TaskList.js`
+[{jsxlisting}]
+----
+...
+**import * as axios from 'axios';**
+
+...
+
+  // Add this method to the body of the class
+  **async componentDidMount() {**
+    **try {**
+      **const response = await axios.get('/tasks');**
+      **this.setState({**
+        **tasks: response.data**
+    **});**
+    **} catch (e) {**
+      **alert(`Error fetching tasks. ${JSON.stringify(e)}`);**
+    **}**
+  **}**
+----
++
+TIP: Axios provides all of the major REST APIs such as `GET`, `PUT`, `PATCH`, `HEAD`, `POST` and `DELETE`.
+
+2. Adjust the `key` and `index` props to use the primary key of each `task`. This is a more consistent way to manage the data for updates.
++
+.Adjust the `key` and `index` props in `TaskList.js` changing the bolded lines:
+[{jsxlisting}]
+----
+  render() {
+   const taskList = this.state.tasks.map(**task** => {
+      return (
+        <TaskItem
+          onCompleteTask={this.completeTask}
+          task={task}
+          **key={task.id}**
+          **index={task.id}** />
+      );
+    });
+  ...
+----
+
+2. Fix up the `completeTask` method
++
+.Replace the code in `completeTask` with the bolded code in this listing:
+[{jsxlisting}]
+----
+  completeTask = (id) => {
+    this.setState((state, props) => {
+      return {
+        tasks: state.tasks.map(**task** => {
+          return **id === task.id** ? { ...task, complete: !task.complete } : task
+        })
+      };
+    })
+  }
+
+----
 
 ----- END OF STRUCTURED LAB -----
 
